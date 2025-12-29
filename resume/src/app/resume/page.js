@@ -11,7 +11,7 @@ export default function ResumePage() {
     }, []);
 
     return (
-        <section id="resume" className="max-w-7xl mx-auto py-12">
+        <section id="resume" className="max-w-7xl mx-auto">
             <div className="rounded-3xl bg-white p-6 sm:p-8 md:p-10 lg:p-12 shadow-[0_12px_48px_rgba(255,34,0,0.2)] hover:shadow-[0_12px_48px_rgba(255,34,0,0.3)] transition-all duration-500 xl:mx-auto xl:max-w-none border border-gray-100">
 
                 {/* Header */}
@@ -48,7 +48,7 @@ export default function ResumePage() {
                         {/* Introduction */}
                         <section className={`transition-all duration-700 delay-75 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                             <h2 className="mb-4 text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
-                                <span className="w-1.5 h-6 bg-linear-to-b from-orange-500 to-orange-600 rounded-full" />
+                                <span className="w-1.5 h-6 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full" />
                                 Introduction
                             </h2>
                             <p className="text-sm sm:text-base text-gray-700 leading-relaxed pl-5">
@@ -59,7 +59,7 @@ export default function ResumePage() {
                         {/* Experience */}
                         <section className={`transition-all duration-700 delay-150 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                             <h2 className="mb-5 text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
-                                <span className="w-1.5 h-6 bg-linear-to-b from-orange-500 to-orange-600 rounded-full" />
+                                <span className="w-1.5 h-6 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full" />
                                 Work Experience
                             </h2>
                             {resumeData.experience.map((exp, index) => (
@@ -93,7 +93,7 @@ export default function ResumePage() {
                         {/* Projects */}
                         <section className={`transition-all duration-700 delay-225 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                             <h2 className="mb-5 text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
-                                <span className="w-1.5 h-6 bg-linear-to-b from-orange-500 to-orange-600 rounded-full" />
+                                <span className="w-1.5 h-6 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full" />
                                 Featured Projects
                             </h2>
                             <div className="pl-5 space-y-6">
@@ -107,6 +107,8 @@ export default function ResumePage() {
                                                 {proj.tech}
                                             </p>
                                         </div>
+
+                                        {/* Business Challenge & Client Objective */}
                                         <div className="space-y-2.5 mb-3.5">
                                             {proj.businessChallenge && (
                                                 <div className="p-3 bg-orange-50/50 border border-orange-100 rounded-lg group-hover:bg-orange-50 transition-colors duration-300">
@@ -121,9 +123,32 @@ export default function ResumePage() {
                                                 </div>
                                             )}
                                         </div>
+
+                                        {/* Project Description */}
                                         <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-3.5">
                                             {proj.description}
                                         </p>
+
+                                        {/* Entities Section */}
+                                        {proj.entities && proj.entities.length > 0 && (
+                                            <div className="mb-4 p-3 bg-gray-50 border border-gray-200 rounded-lg group-hover:bg-gray-100 transition-all duration-300">
+                                                <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2 flex items-center gap-1">
+                                                    Delivered Components
+                                                </p>
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    {proj.entities.map((entity, i) => (
+                                                        <span
+                                                            key={i}
+                                                            className="inline-flex items-center px-2.5 py-1 bg-white border border-gray-200 text-xs font-medium text-gray-800 rounded-md shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200"
+                                                        >
+                                                            {entity}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Project Link */}
                                         {proj.link && (
                                             <a
                                                 href={proj.link}
@@ -143,7 +168,7 @@ export default function ResumePage() {
                         {/* Education */}
                         <section className={`transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                             <h2 className="mb-5 text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
-                                <span className="w-1.5 h-6 bg-linear-to-b from-orange-500 to-orange-600 rounded-full" />
+                                <span className="w-1.5 h-6 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full" />
                                 Education
                             </h2>
                             {resumeData.education.map((edu, index) => (
@@ -172,7 +197,7 @@ export default function ResumePage() {
                         {/* Skills */}
                         <section className={`transition-all duration-700 delay-375 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                             <h2 className="mb-5 text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
-                                <span className="w-1.5 h-6 bg-linear-to-b from-orange-500 to-orange-600 rounded-full" />
+                                <span className="w-1.5 h-6 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full" />
                                 Technical Skills
                             </h2>
                             <div className="space-y-5 pl-5">
@@ -185,7 +210,7 @@ export default function ResumePage() {
                                             {skills.map((skill, i) => (
                                                 <span
                                                     key={i}
-                                                    className="inline-flex items-center px-3 py-1.5 bg-linear-to-r from-neutral-800 to-black text-white rounded-lg text-sm font-medium hover:scale-105 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-default"
+                                                    className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-neutral-800 to-black text-white rounded-lg text-sm font-medium hover:scale-105 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-default"
                                                 >
                                                     {skill}
                                                 </span>
@@ -199,7 +224,7 @@ export default function ResumePage() {
                         {/* Languages */}
                         <section className={`transition-all duration-700 delay-450 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                             <h2 className="mb-5 text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-3">
-                                <span className="w-1.5 h-6 bg-linear-to-b from-orange-500 to-orange-600 rounded-full" />
+                                <span className="w-1.5 h-6 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full" />
                                 Languages
                             </h2>
                             <ul className="space-y-3 pl-5">
