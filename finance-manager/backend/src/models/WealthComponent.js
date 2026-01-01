@@ -1,0 +1,24 @@
+// models/WealthComponent.js
+import mongoose from 'mongoose';
+const { Schema, model } = mongoose;
+
+const WealthComponentSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        maxlength: 50
+    },
+    color: {
+        type: String,
+        default: '#64748b',
+        match: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
+    },
+    isActive: {
+        type: Boolean,
+        default: true
+    }
+}, { timestamps: true });
+
+export default model('WealthComponent', WealthComponentSchema);
