@@ -5,7 +5,7 @@ export const metadata = {
     openGraph: {
         title: 'Portfolio - Mitesh Goyal',
         description: 'MERN stack projects, React Native apps, fintech platforms',
-        url: 'https://miteshgoyal.com/portfolio',
+        url: 'https://cv.miteshh.in/portfolio',
         type: 'website',
     },
     twitter: {

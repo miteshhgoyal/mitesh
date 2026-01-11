@@ -12,7 +12,7 @@ export default function ResumePage() {
 
     return (
         <section id="resume" className="max-w-7xl mx-auto">
-            <div className="rounded-3xl bg-white p-6 sm:p-8 md:p-10 lg:p-12 shadow-[0_12px_48px_rgba(255,34,0,0.2)] hover:shadow-[0_12px_48px_rgba(255,34,0,0.3)] transition-all duration-500 xl:mx-auto xl:max-w-none border border-gray-100">
+            <div className="bg-white p-6 sm:p-8 md:p-10 lg:p-12 shadow-[0_12px_48px_rgba(255,34,0,0.2)] hover:shadow-[0_12px_48px_rgba(255,34,0,0.3)] transition-all duration-500 xl:mx-auto xl:max-w-none border border-gray-100">
 
                 {/* Header */}
                 <div className={`mb-10 flex flex-col items-start sm:items-center border-b border-gray-200 pb-8 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>

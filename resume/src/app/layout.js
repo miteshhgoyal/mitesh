@@ -10,7 +10,7 @@ const sora = Sora({
 });
 
 export const metadata = {
-    metadataBase: new URL('https://miteshgoyal.com'),
+    metadataBase: new URL('https://cv.miteshh.in'),
     title: {
         default: 'Mitesh Goyal - Full Stack Developer',
         template: '%s | Mitesh Goyal'
@@ -22,7 +22,7 @@ export const metadata = {
     openGraph: {
         type: 'website',
         locale: 'en_US',
-        url: 'https://miteshgoyal.com',
+        url: 'https://cv.miteshh.in',
         title: 'Mitesh Goyal - Full Stack Developer',
         description: 'Professional resume and portfolio of Mitesh Goyal, Full Stack Web Developer.',
         siteName: 'Mitesh Goyal Portfolio',
@@ -61,9 +61,12 @@ export default function RootLayout({ children }) {
             >
                 {/* Main Content - Proper spacing + max-width */}
                 <main>
-                    <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-12 py-2 sm:py-4 md:py-6 lg:py-12">
+                    <div className="max-w-7xl mx-auto sm:px-4 md:px-6 lg:px-12 sm:py-4 md:py-6 lg:py-12">
+                        {/* <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-12 py-2 sm:py-4 md:py-6 lg:py-12"> */}
                         {/* <Navbar /> */}
-                        {children}
+                        <div className='sm:rounded-3xl overflow-hidden'>
+                            {children}
+                        </div>
                     </div>
                 </main>
             </body>

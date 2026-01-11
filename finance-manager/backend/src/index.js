@@ -5,6 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
+import dashboardRoutes from "./routes/dashboard.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 app.use((err, req, res, next) => {
     console.error('Error:', err.stack);

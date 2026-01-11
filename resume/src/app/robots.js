@@ -1,4 +1,5 @@
-// app/robots.js
+export const dynamic = 'force-static'
+
 export default function robots() {
     return {
         rules: {
@@ -6,7 +7,7 @@ export default function robots() {
             allow: '/',
             disallow: '/private/',
         },
-        sitemap: 'https://miteshgoyal.com/sitemap.xml', // Replace with YOUR domain
-        host: 'https://miteshgoyal.com', // Replace with YOUR domain
+        sitemap: 'https://cv.miteshh.in/sitemap.xml',
+        host: 'https://cv.miteshh.in',
     };
 }

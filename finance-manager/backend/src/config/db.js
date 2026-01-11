@@ -8,13 +8,18 @@ import Config from '../models/Config.js';
 import Type from '../models/Type.js';
 import Tag from '../models/Tag.js';
 import WealthComponent from '../models/WealthComponent.js';
+import DeductedFrom from '../models/DeductedFrom.js';
 import Template from '../models/Template.js';
+import Transaction from '../models/Transaction.js';
 
 dotenv.config({ quiet: true });
 
 const MONGO_URI = process.env.NODE_ENV === 'development'
     ? process.env.MONGODB_URI
     : process.env.MONGODB_URI_PROD;
+
+// Toggle for dummy data seeding
+const SEED_DUMMY_DATA = process.env.SEED_DUMMY_DATA === 'true';
 
 const connectDB = async () => {
     try {
@@ -27,6 +32,12 @@ const connectDB = async () => {
         await seedConfigUser();
         await seedReferenceData();
         await seedTemplates();
+
+        if (SEED_DUMMY_DATA) {
+            await seedDummyData();
+        } else {
+            console.log('Skipping dummy data seeding (SEED_DUMMY_DATA=false)');
+        }
     } catch (error) {
         console.error('Error connecting to MongoDB:', error.message);
         process.exit(1);
@@ -104,13 +115,34 @@ const seedReferenceData = async () => {
         }
         console.log(`Seeded ${seededWealth} new Wealth Components (total: ${await WealthComponent.countDocuments()})`);
 
-        // 3. Seed Sample Tags
+        // 3. Seed DeductedFrom (new model)
+        const defaultDeductedFrom = [
+            { name: 'cash', color: '#22c55e' },
+            { name: 'hdfc-bank', color: '#3b82f6' },
+            { name: 'sbi-bank', color: '#1e40af' },
+            { name: 'paypal', color: '#f59e0b' },
+            { name: 'crypto-wallet', color: '#f59e0b' }
+        ];
+
+        let seededDeductedFrom = 0;
+        for (const deductedFrom of defaultDeductedFrom) {
+            const existing = await DeductedFrom.findOne({ name: deductedFrom.name });
+            if (!existing) {
+                await DeductedFrom.create(deductedFrom);
+                seededDeductedFrom++;
+            }
+        }
+        console.log(`Seeded ${seededDeductedFrom} new DeductedFrom (total: ${await DeductedFrom.countDocuments()})`);
+
+        // 4. Seed Sample Tags
         const sampleTags = [
             { name: 'salary', color: '#6366f1' },
             { name: 'grocery', color: '#ef4444' },
             { name: 'monthly', color: '#10b981' },
             { name: 'investment', color: '#f59e0b' },
-            { name: 'expense', color: '#dc2626' }
+            { name: 'expense', color: '#dc2626' },
+            { name: 'freelance', color: '#8b5cf6' },
+            { name: 'transport', color: '#06b6d4' }
         ];
 
         let seededTags = 0;
@@ -174,17 +206,25 @@ const seedTemplates = async () => {
             const creditType = await Type.findOne({ name: 'CREDIT' });
             const cashWealth = await WealthComponent.findOne({ name: 'Cash' });
             const bankWealth = await WealthComponent.findOne({ name: 'Bank' });
+            const hdfcDeducted = await DeductedFrom.findOne({ name: 'hdfc-bank' });
+            const sbiDeducted = await DeductedFrom.findOne({ name: 'sbi-bank' });
+            const cashDeducted = await DeductedFrom.findOne({ name: 'cash' });
 
             if (!debitType || !creditType || !cashWealth || !bankWealth) {
                 console.warn('Missing reference data for templates');
                 continue;
             }
 
+            const deductedFromRef = templateData.deductedFrom.toLowerCase().includes('cash') ? cashDeducted :
+                templateData.deductedFrom.toLowerCase().includes('hdfc') ? hdfcDeducted :
+                    templateData.deductedFrom.toLowerCase().includes('sbi') ? sbiDeducted : cashDeducted;
+
             const template = {
                 ...templateData,
                 type: templateData.netAmount > 0 ? creditType._id : debitType._id,
                 wealthComponent: templateData.deductedFrom.toLowerCase().includes('cash')
                     ? cashWealth._id : bankWealth._id,
+                deductedFrom: deductedFromRef ? deductedFromRef._id : cashDeducted?._id,
                 isActive: true
             };
 
@@ -197,6 +237,94 @@ const seedTemplates = async () => {
         console.log(`Seeded ${seededTemplates} new Templates (total: ${await Template.countDocuments()})`);
     } catch (error) {
         console.error('Error seeding templates:', error.message);
+    }
+};
+
+const seedDummyData = async () => {
+    try {
+        console.log('Seeding dummy transactions one by one...');
+
+        // Get all references first
+        const debitType = await Type.findOne({ name: 'DEBIT' });
+        const creditType = await Type.findOne({ name: 'CREDIT' });
+        const salaryTag = await Tag.findOne({ name: 'salary' });
+        const groceryTag = await Tag.findOne({ name: 'grocery' });
+        const cashWealth = await WealthComponent.findOne({ name: 'Cash' });
+        const bankWealth = await WealthComponent.findOne({ name: 'Bank' });
+        const cryptoWealth = await WealthComponent.findOne({ name: 'Crypto' });
+        const cashDeducted = await DeductedFrom.findOne({ name: 'cash' });
+        const hdfcDeducted = await DeductedFrom.findOne({ name: 'hdfc-bank' });
+
+        if (!debitType || !creditType || !cashWealth || !bankWealth) {
+            console.warn('Missing reference data for dummy transactions');
+            return;
+        }
+
+        const dummyTransactions = [
+            {
+                name: 'Freelance Payment - Client A',
+                amount: 25000,
+                netAmount: 25000,
+                type: creditType._id,
+                date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+                tags: [salaryTag?._id],
+                deductedFrom: hdfcDeducted?._id,
+                wealthComponent: bankWealth._id,
+                description: 'Payment for MERN stack project completion'
+            },
+            {
+                name: 'Grocery Shopping - BigBasket',
+                amount: 1800,
+                netAmount: -1800,
+                type: debitType._id,
+                date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+                tags: [groceryTag?._id],
+                deductedFrom: cashDeducted?._id,
+                wealthComponent: cashWealth._id,
+                description: 'Monthly grocery - rice, vegetables, milk, household items'
+            },
+            {
+                name: 'Crypto Investment - BTC',
+                amount: 5000,
+                netAmount: -5000,
+                type: debitType._id,
+                date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // yesterday
+                tags: [],
+                deductedFrom: hdfcDeducted?._id,
+                wealthComponent: cryptoWealth?._id || bankWealth._id,
+                description: 'Bitcoin investment through WazirX'
+            },
+            {
+                name: 'Salary Credit - Dec Month',
+                amount: 45000,
+                netAmount: 45000,
+                type: creditType._id,
+                date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+                tags: [salaryTag?._id],
+                deductedFrom: hdfcDeducted?._id,
+                wealthComponent: bankWealth._id,
+                description: 'Monthly salary after PF and tax deductions'
+            }
+        ];
+
+        let seededTransactions = 0;
+        for (const transactionData of dummyTransactions) {
+            const existing = await Transaction.findOne({
+                name: transactionData.name,
+                date: transactionData.date
+            });
+            if (!existing) {
+                await Transaction.create(transactionData);
+                seededTransactions++;
+                console.log(`Seeded: ${transactionData.name}`);
+            } else {
+                console.log(`⏭️Skipped (exists): ${transactionData.name}`);
+            }
+        }
+
+        console.log(`\n🎉 Seeded ${seededTransactions} new Transactions (total: ${await Transaction.countDocuments()})`);
+    } catch (error) {
+        console.error('Error seeding dummy data:', error.message);
     }
 };
 

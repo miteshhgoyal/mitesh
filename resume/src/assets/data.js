@@ -4,7 +4,7 @@ export const resumeData = {
     email: "miteshhgoyal@gmail.com",
     phone: "7889203083",
     location: "Budhlada, Punjab, India",
-    portfolioLink: "https://miteshgoyal.com",
+    portfolioLink: "https://cv.miteshh.in",
     portfolioLabel: "Portfolio",
     introduction: "Results-driven Full-Stack Developer specializing in the MERN stack (MongoDB, Express.js, React.js, Node.js). Proven expertise delivering scalable SaaS platforms, fintech solutions, IPTV systems, and enterprise applications. Excels in complete project lifecycle management from requirements analysis to production deployment and ongoing maintenance.",
 

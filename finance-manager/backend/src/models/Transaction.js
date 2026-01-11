@@ -32,10 +32,8 @@ const TransactionSchema = new Schema({
         ref: 'Tag'
     }],
     deductedFrom: {
-        type: String,
-        required: true,
-        trim: true,
-        maxlength: 100
+        type: Schema.Types.ObjectId,
+        ref: 'DeductedFrom'
     },
     wealthComponent: {
         type: Schema.Types.ObjectId,

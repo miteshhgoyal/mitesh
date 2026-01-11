@@ -89,13 +89,13 @@ const LayoutWrapper = ({ children }) => {
         <div className="flex-1 overflow-auto">
           <main
             className={`
-              pt-20 md:pt-24 
-              pb-8 
-              px-6 md:px-8 lg:px-12 
+              pt-0
+              pb-0
+              px-0
               transition-all duration-300
             `}
           >
-            <div className="w-full rounded-xl overflow-hidden border border-neutral-800 border-t-white/20 border-l-white/20 bg-neutral-900/40 backdrop-blur-md">
+            <div className="w-full pt-20 overflow-hidden bg-black/30">
               {children}
             </div>
           </main>
